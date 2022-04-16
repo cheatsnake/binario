@@ -1,3 +1,9 @@
 # binario
 
-[App](./workflow/app_structure.png)
+## Basic app structure
+
+![Struct](./workflow/app_structure.png)
+
+## App design
+
+![Design](./workflow/app-design.png)
