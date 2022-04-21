@@ -1,5 +1,6 @@
 import { FIELD_NOT_GENERATED } from "../constants/error.constants";
 import { generateField, prepareField } from "./generator";
+import { verifyField } from "./verification";
 
 export class BinarioCore {
     constructor(size: number) {
@@ -7,8 +8,8 @@ export class BinarioCore {
     }
 
     readonly size: number;
-    public field: string[][];
-    public preparedField: string[][];
+    private field: string[][];
+    task: string[][];
 
     generate() {
         let field: string[][] | null;
@@ -17,26 +18,17 @@ export class BinarioCore {
         }
         this.field = field;
     }
+
     prepare(fillFactor = 1 / 3) {
         if (!this.field) throw new Error(FIELD_NOT_GENERATED);
-        this.preparedField = prepareField(this.field, fillFactor);
+        this.task = prepareField(this.field, fillFactor);
     }
-    verify() {}
+
+    change(row: number, column: number, value: "0" | "1" | "x") {
+        this.task[row][column] = value;
+    }
+
+    verify() {
+        return verifyField(this.task);
+    }
 }
-
-console.time("bench");
-const binario = new BinarioCore(16);
-console.timeLog("bench");
-binario.generate();
-console.timeLog("bench");
-binario.prepare(0.5);
-console.timeLog("bench");
-
-// binario.field.forEach((row) => {
-//     console.log(row.join(""));
-// });
-// console.log("-".repeat(8));
-// binario.preparedField.forEach((row) => {
-//     console.log(row.join(""));
-// });
-console.timeEnd("bench");
