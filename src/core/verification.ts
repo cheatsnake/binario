@@ -3,16 +3,9 @@ import {
     DUPLICATION_ERROR,
     TRIPLE_ERROR,
 } from "../constants/error.constants";
+import type { VerificationErrorType, VerificationResult } from "../types";
+import { FieldValues } from "./generator";
 import { countSubstring } from "./helpers";
-
-type VerificationErrorType = "triple" | "duplicate" | "balance" | null;
-
-interface VerificationResult {
-    isError: boolean;
-    type: VerificationErrorType;
-    message: string | null;
-    position: number[][] | null;
-}
 
 export function verifyField(field: string[][]): VerificationResult {
     let result: VerificationResult = {
@@ -53,41 +46,36 @@ export function verifyField(field: string[][]): VerificationResult {
     }
 
     // check columns
-    console.log("cols");
-
     for (let i = 0; i < columns.length; i++) {
-        console.log(columns[i]);
         const isTripled = checkTripleTiles(columns[i]);
         if (isTripled) return defineError("triple", TRIPLE_ERROR, [[0], [i]]);
         const isBalanced = checkBalance(columns[i]);
         if (isBalanced)
             return defineError("balance", BALANCE_ERROR, [[0], [i]]);
-        console.log(isTripled, isBalanced);
     }
 
     // check rows
-    console.log("rows");
     for (let i = 0; i < rows.length; i++) {
-        console.log(rows[i]);
         const isTripled = checkTripleTiles(rows[i]);
         if (isTripled) return defineError("triple", TRIPLE_ERROR, [[i], [0]]);
         const isBalanced = checkBalance(rows[i]);
         if (isBalanced)
             return defineError("balance", BALANCE_ERROR, [[i], [0]]);
-        console.log(isTripled, isBalanced);
     }
 
     return result;
 }
 
 function checkTripleTiles(line: string): boolean {
-    const result = line.includes("000") || line.includes("111");
+    const result =
+        line.includes(FieldValues.ZERO.repeat(3)) ||
+        line.includes(FieldValues.ONE.repeat(3));
     return result;
 }
 
 function checkBalance(line: string): boolean {
-    const zeros = countSubstring(line, "0");
-    const ones = countSubstring(line, "1");
+    const zeros = countSubstring(line, FieldValues.ZERO);
+    const ones = countSubstring(line, FieldValues.ONE);
     const result = !(zeros === ones);
     return result;
 }
