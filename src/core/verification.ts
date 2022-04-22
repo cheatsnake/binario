@@ -3,8 +3,11 @@ import {
     DUPLICATION_ERROR,
     TRIPLE_ERROR,
 } from "../constants/error.constants";
-import type { VerificationErrorType, VerificationResult } from "../types";
-import { FieldValues } from "./generator";
+import {
+    TileValues,
+    VerificationErrorType,
+    VerificationResult,
+} from "../types";
 import { countSubstring } from "./helpers";
 
 export function verifyField(field: string[][]): VerificationResult {
@@ -68,14 +71,14 @@ export function verifyField(field: string[][]): VerificationResult {
 
 function checkTripleTiles(line: string): boolean {
     const result =
-        line.includes(FieldValues.ZERO.repeat(3)) ||
-        line.includes(FieldValues.ONE.repeat(3));
+        line.includes(TileValues.ZERO.repeat(3)) ||
+        line.includes(TileValues.ONE.repeat(3));
     return result;
 }
 
 function checkBalance(line: string): boolean {
-    const zeros = countSubstring(line, FieldValues.ZERO);
-    const ones = countSubstring(line, FieldValues.ONE);
+    const zeros = countSubstring(line, TileValues.ZERO);
+    const ones = countSubstring(line, TileValues.ONE);
     const result = !(zeros === ones);
     return result;
 }

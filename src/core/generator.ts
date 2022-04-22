@@ -1,15 +1,10 @@
+import { TileValues } from "../types";
 import {
     arrayFromLength,
     countSubstring,
     getRandomBoolean,
     getRandomNumber,
 } from "./helpers";
-
-export enum FieldValues {
-    ZERO = "0",
-    ONE = "1",
-    EMPTY = "x",
-}
 
 export function generateField(size: number): string[][] | null {
     const field = [];
@@ -62,13 +57,13 @@ function generateRows(size: number) {
     const max = 2 ** size;
 
     for (let i = 0; i < max; i++) {
-        const str = i.toString(2).padStart(size, FieldValues.ZERO).toString();
+        const str = i.toString(2).padStart(size, TileValues.ZERO).toString();
 
         if (
-            str.includes(FieldValues.ZERO.repeat(3)) ||
-            str.includes(FieldValues.ONE.repeat(3)) ||
-            countSubstring(str, FieldValues.ZERO) > size / 2 ||
-            countSubstring(str, FieldValues.ONE) > size / 2
+            str.includes(TileValues.ZERO.repeat(3)) ||
+            str.includes(TileValues.ONE.repeat(3)) ||
+            countSubstring(str, TileValues.ZERO) > size / 2 ||
+            countSubstring(str, TileValues.ONE) > size / 2
         )
             continue;
         rows.push(str);
@@ -80,22 +75,22 @@ function defineNextRow(columns: string[]) {
     let nextRow = "";
 
     for (let i = 0; i < columns.length; i++) {
-        if (columns[i].slice(-2) == FieldValues.ZERO.repeat(2)) {
-            nextRow += FieldValues.ONE;
-        } else if (columns[i].slice(-2) == FieldValues.ONE.repeat(2)) {
-            nextRow += FieldValues.ZERO;
+        if (columns[i].slice(-2) == TileValues.ZERO.repeat(2)) {
+            nextRow += TileValues.ONE;
+        } else if (columns[i].slice(-2) == TileValues.ONE.repeat(2)) {
+            nextRow += TileValues.ZERO;
         } else if (
-            countSubstring(columns[i], FieldValues.ZERO) ==
+            countSubstring(columns[i], TileValues.ZERO) ==
             columns.length / 2
         ) {
-            nextRow += FieldValues.ONE;
+            nextRow += TileValues.ONE;
         } else if (
-            countSubstring(columns[i], FieldValues.ONE) ==
+            countSubstring(columns[i], TileValues.ONE) ==
             columns.length / 2
         ) {
-            nextRow += FieldValues.ZERO;
+            nextRow += TileValues.ZERO;
         } else {
-            nextRow += FieldValues.EMPTY;
+            nextRow += TileValues.EMPTY;
         }
     }
 
@@ -106,7 +101,7 @@ function filteringRows(rows: string[], pattern: string) {
     const filteredRows = rows.filter((row: string) => {
         let isNextRow = true;
         for (let i = 0; i < rows.length; i++) {
-            if (pattern[i] == FieldValues.EMPTY) continue;
+            if (pattern[i] == TileValues.EMPTY) continue;
             if (row.split("")[i] != pattern[i]) {
                 isNextRow = false;
                 break;
@@ -137,7 +132,7 @@ export function prepareField(field: string[][], fillFactor: number) {
         for (let j = 0; j < field[i].length; j++) {
             getRandomBoolean(fillFactor)
                 ? preparedRow.push(field[i][j])
-                : preparedRow.push(FieldValues.EMPTY);
+                : preparedRow.push(TileValues.EMPTY);
         }
         preparedField.push(preparedRow);
     }
