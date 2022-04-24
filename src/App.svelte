@@ -1,11 +1,9 @@
 <script lang="ts">
-	import GameArea from './components/GameArea.svelte';
+	import GamePage from './pages/GamePage.svelte';
 </script>
 
 <div class="app">
-	<p>00:17</p>
-	<GameArea/>
-	<p>UNDO</p>
+	<GamePage />
 </div>
 
 <style lang="scss">
@@ -14,7 +12,7 @@
 		height: 100vh;
 		text-align: center;
 		display: flex;
-		justify-content: center;
+		justify-content: space-evenly;
 		flex-direction: column;
 		align-items: center;
 		background-color: #0d1117;

@@ -1,48 +1,41 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 
-	let canvas: HTMLCanvasElement;
+    import { onMount } from 'svelte';
+    import type BinarioCore from '../core';
+    import type { TileValues } from '../types';
+    import Tile from './Tile.svelte'
 
-	onMount(() => {
-		const ctx = canvas.getContext('2d');
-        const canvasSize = window.innerWidth > 800 ? 800 : window.innerWidth - 20;
-        canvas.width = canvas.height = canvasSize;
+    let area: HTMLDivElement;
+    export let binario: BinarioCore
+    export let changeTile: (r: number, c: number, v: TileValues) => void;
 
-        const SIZE = 8;
+    onMount(() => {
+        window.oncontextmenu = () => false;
 
-        function createTiles() {
-            const tileSize = (canvasSize - canvasSize / 10) / SIZE; 
-            const padding = (canvasSize / 10) / (SIZE - 1);
+        const gapSize = (1 - (binario.size - 4) * 0.1)
 
-            ctx.fillStyle = ctx.strokeStyle = "#171a20";
-            ctx.lineWidth = 1;
-            ctx.lineJoin = 'round';
-            for (let i = 0; i < SIZE; i++) {
-                    for (let j = 0; j < SIZE; j++ ) {
-                    ctx.beginPath();
-                    ctx.rect(j * (tileSize + padding), i * (tileSize + padding), tileSize, tileSize);
-                    ctx.stroke();
-                    ctx.fill();
-                }
-            }
-
-        }
-        createTiles()
-
-
-        // ctx.moveTo(0, 0)
-        // ctx.lineTo(canvasSize / 2, canvasSize / 2)
-        // ctx.strokeStyle = "#171a20"
-        // ctx.stroke()
-	})
-
-
+        area.style.width = area.style.height = `${(window.innerHeight*0.66).toFixed(0)}px`;
+        area.style.gridTemplateColumns = `repeat(${binario.size}, 1fr)`
+        area.style.gridTemplateRows = `repeat(${binario.size}, 1fr)`
+        area.style.gap = `${gapSize < 0.4 ? 0.4 : gapSize }rem`
+	});
 </script>
 
-
-<canvas id="canvas" bind:this={canvas}></canvas>
-
+<div class="area" bind:this={area}>
+	{#each binario.task as row, i}
+        {#each row as value, j}
+            <Tile value="{value}" id="{`${i}-${j}`}" changeTile={changeTile}/>
+        {/each}
+	{/each}
+</div>
 
 <style lang="scss">
-
+    .area {
+        width: 43.75rem;
+        height: 43.75rem;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+        gap: 0.6rem;
+    }
 </style>
