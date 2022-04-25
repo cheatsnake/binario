@@ -32,38 +32,32 @@ export function verifyField(field: string[][]): VerificationResult {
         columns.push(column);
     }
 
-    const duplicationRows = checkDuplication(rows);
+    const duplicationRows = checkDuplication(rows, "row");
     if (duplicationRows.length) {
-        return defineError("duplicate", DUPLICATION_ERROR, [
-            duplicationRows,
-            [0],
-        ]);
+        return defineError("duplicate", DUPLICATION_ERROR, duplicationRows);
     }
 
-    const duplicationColumns = checkDuplication(columns);
+    const duplicationColumns = checkDuplication(columns, "col");
     if (duplicationColumns.length) {
-        return defineError("duplicate", DUPLICATION_ERROR, [
-            [0],
-            duplicationColumns,
-        ]);
+        return defineError("duplicate", DUPLICATION_ERROR, duplicationColumns);
     }
 
     // check columns
     for (let i = 0; i < columns.length; i++) {
         const isTripled = checkTripleTiles(columns[i]);
-        if (isTripled) return defineError("triple", TRIPLE_ERROR, [[0], [i]]);
+        if (isTripled) return defineError("triple", TRIPLE_ERROR, [`col-${i}`]);
         const isBalanced = checkBalance(columns[i]);
         if (isBalanced)
-            return defineError("balance", BALANCE_ERROR, [[0], [i]]);
+            return defineError("balance", BALANCE_ERROR, [`col-${i}`]);
     }
 
     // check rows
     for (let i = 0; i < rows.length; i++) {
         const isTripled = checkTripleTiles(rows[i]);
-        if (isTripled) return defineError("triple", TRIPLE_ERROR, [[i], [0]]);
+        if (isTripled) return defineError("triple", TRIPLE_ERROR, [`row-${i}`]);
         const isBalanced = checkBalance(rows[i]);
         if (isBalanced)
-            return defineError("balance", BALANCE_ERROR, [[i], [0]]);
+            return defineError("balance", BALANCE_ERROR, [`row-${i}`]);
     }
 
     return result;
@@ -83,14 +77,15 @@ function checkBalance(line: string): boolean {
     return result;
 }
 
-function checkDuplication(lines: string[]): number[] {
-    let position: number[] = [];
+function checkDuplication(lines: string[], type: string): string[] {
+    let position: string[] = [];
     for (let i = 0; i < lines.length; i++) {
         for (let j = i + 1; j < lines.length; j++) {
             if (lines[i] === lines[j]) {
-                position.push(i, j);
+                position.push(`${type}-${i}`, `${type}-${j}`);
             }
         }
+        if (position.length) break;
     }
     return position;
 }
@@ -98,7 +93,7 @@ function checkDuplication(lines: string[]): number[] {
 function defineError(
     type: VerificationErrorType,
     message: string,
-    position: number[][]
+    position: string[]
 ): VerificationResult {
     return {
         isError: true,
