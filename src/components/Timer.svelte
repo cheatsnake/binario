@@ -6,17 +6,20 @@
     let last_time = window.performance.now();
     let frame: number;
     let formatedTime: string;
+    export let isPlay: boolean;
 
     (function update() {
-        frame = requestAnimationFrame(update);
+        if (isPlay) {
+            frame = requestAnimationFrame(update);
 
-        const time = window.performance.now();
-        elapsed += time - last_time;
-        elapsedSeconds = +(elapsed / 1000).toFixed(0)
+            const time = window.performance.now();
+            elapsed += time - last_time;
+            elapsedSeconds = +(elapsed / 1000).toFixed(0)
 
-        last_time = time;
+            last_time = time;
 
-        formatTime()
+            formatTime();
+        }
     }());
 
     function formatLength(num: number): string {
@@ -42,8 +45,14 @@
 
 <style lang="scss">
 	.timer {
+        cursor: pointer;
+        user-select: none;
 		font-size: 2.2rem;
-		font-weight: 400;
+		font-weight: 700;
 		color: #ffb33b;
+        transition: 0.3s all;
+        &:hover {
+            transform: scale(1.1);
+        }
 	}
 </style>
