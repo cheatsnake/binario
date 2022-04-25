@@ -15,18 +15,11 @@ export function generateField(size: number): string[][] | null {
     for (let i = 0; i < size; i++) {
         if (i > 1) {
             let nextRowPattern = defineNextRow(columns);
-            if (i == size - 1) {
-                // last row
-                row = nextRowPattern;
-                field.push(row);
-                return splitFieldIntoTiles(field);
-            } else {
-                const filteredRows = filteringRows(rows, nextRowPattern);
-                index = getRandomNumber(filteredRows.length - 1);
-                row = filteredRows[index];
-                if (!row) return null; // Dead end random (5-10% chance)
-                index = rows.indexOf(row);
-            }
+            const filteredRows = filteringRows(rows, nextRowPattern);
+            index = getRandomNumber(filteredRows.length - 1);
+            row = filteredRows[index];
+            if (!row) return null; // Dead end random (5-10% chance)
+            index = rows.indexOf(row);
         } else {
             index = getRandomNumber(rows.length - 1);
             row = rows[index];
@@ -50,6 +43,7 @@ export function generateField(size: number): string[][] | null {
                 break;
         }
     }
+    return splitFieldIntoTiles(field);
 }
 
 function generateRows(size: number) {
