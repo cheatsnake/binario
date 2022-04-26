@@ -1,6 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import BackBtn from "../components/Buttons/BackBtn.svelte";
     import UndoBtn from "../components/Buttons/UndoBtn.svelte";
+    import UpdateBtn from "../components/Buttons/UpdateBtn.svelte";
     import Counter from "../components/Counter.svelte";
     import Field from "../components/Field.svelte";
     import ErrorMessage from "../components/Messages/ErrorMessage.svelte";
@@ -11,7 +13,7 @@
     import { countSubstring } from "../core/helpers";
     import type { TileValues, VerificationResult } from "../types";
     
-    const size = 8;
+    export let size: number;
     const totalTiles = size ** 2;
     const binario = new BinarioCore(size);
     let verificationResult: VerificationResult;
@@ -98,7 +100,10 @@
 {/if}
 
 <div class="stats">
-    <Counter tileStats="{tileStats}"/>
+    <div class="stats__btns">
+        <BackBtn />
+        <UpdateBtn />
+    </div>
     <Timer isPlay="{isPlay}" />
     <Counter tileStats="{tileStats}"/>
 </div>
@@ -115,7 +120,13 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
-        padding: 0.5rem 2rem;
+        justify-content: space-between;
+        padding: 0.5rem 4.2rem;
+        &__btns {
+            display: flex;
+            flex-direction: row;
+            gap: 1.5rem;
+            z-index: 3;
+        }
     }
 </style>
