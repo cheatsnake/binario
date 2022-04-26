@@ -46,7 +46,9 @@
         id="{id}" 
         class="{`${tileStyle} ${tileStyle}_${value} ${blockedTile}`}" 
         bind:this={tile}
-    >∎</div>
+    >
+        <div class="block"><div></div></div>
+    </div>
 {:else}
     <div transition:fade id="{id}" class="{tileStyle}" bind:this={tile}></div>
 {/if}
@@ -87,6 +89,17 @@
             animation-name: error;
             animation-duration: 1.5s;
             animation-iteration-count: infinite;
+        }
+    }
+    .block {
+        width: 100%;
+        height: 100%;
+        padding: 36% 39% 42% 39%;
+        div {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            background-color: #161b22;
         }
     }
 </style>
