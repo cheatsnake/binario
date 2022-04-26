@@ -8,6 +8,7 @@
 
 <style>
     .counter {
+        color: #1e252e;
         user-select: none;
 		font-size: 2.2rem;
 		font-weight: 700;
