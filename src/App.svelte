@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { Route, path } from "svelte-micro";
+	import { Route } from "svelte-micro";
 	import { fade } from 'svelte/transition';
+	import AboutPage from "./pages/AboutPage.svelte";
 	import GamePage from './pages/GamePage.svelte';
 	import MenuPage from './pages/MenuPage.svelte';
 </script>
   
 <div transition:fade={{duration: 500}} class="app">
 <Route>
-	<!-- <div transition:fade={{duration: 500}} class="app"> -->
 		<Route path="/4"><GamePage size="{4}" /></Route>
 		<Route path="/6"><GamePage size="{6}" /></Route>
 		<Route path="/8"><GamePage size="{8}" /></Route>
 		<Route path="/10"><GamePage size="{10}" /></Route>
 		<Route path="/12"><GamePage size="{12}" /></Route>
+		<Route path="/about"><AboutPage /></Route>
 		<Route path="/"><MenuPage /></Route>
-	<!-- </div> -->
 </Route>
 </div>
 

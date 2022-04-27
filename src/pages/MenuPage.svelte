@@ -10,7 +10,7 @@ import MenuBtn from "../components/Buttons/MenuBtn.svelte";
         <MenuBtn url="/8">8x8</MenuBtn>
         <MenuBtn url="/10">10x10</MenuBtn>
         <MenuBtn url="/12">12x12</MenuBtn>
-        <MenuBtn url="/" accent="{true}">About</MenuBtn>
+        <MenuBtn url="/about" accent="{true}">About</MenuBtn>
     </div>
     <a href="https://twitter.com/yurace_" class="label">Made by <b>Yury</b></a>
 </div>
