@@ -1,6 +1,6 @@
 # Binario
 
-![Game-screenshot](./files/Screenshot.png)
+<a href="https://binario.vercel.app"><img src="./files/Screenshot.png" alt="screenshot" /></a>
 
 Binario is a logic puzzle game that also known as [takuzu (or binairo)](https://en.wikipedia.org/wiki/Takuzu). The goal of the game is to fill the playing field with tiles of two colors. To pass it successfully, you only need to follow three simple rules:
 
