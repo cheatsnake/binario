@@ -19,15 +19,17 @@ export default class BinarioCore {
 
     public generate() {
         let field: string[][] | null;
-        while (!field) {
+        let verifyResult: VerificationResult;
+        while (!field || (verifyResult && verifyResult.isError)) {
             field = generateField(this.size);
+            if (field) verifyResult = verifyField(field);
         }
         this.field = field;
     }
 
     public prepare(fillFactor = 0.33) {
         if (!this.field) throw new Error(FIELD_NOT_GENERATED);
-        if (fillFactor > 0.5 || fillFactor < 0.2)
+        if (fillFactor > 1 || fillFactor < 0.2)
             throw new Error(INVALID_FILL_FACTOR);
         this.task = prepareField(this.field, fillFactor);
     }
